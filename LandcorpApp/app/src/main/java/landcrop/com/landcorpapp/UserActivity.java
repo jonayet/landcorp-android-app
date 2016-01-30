@@ -1,10 +1,11 @@
 package landcrop.com.landcorpapp;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import BLL.LinkStore;
 import helper.DataBase;
@@ -55,33 +56,35 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.user_button1:
-                goToUrl(button1,"button1");
+                goToUrl("button1");
                 break;
             case R.id.user_button2:
-                goToUrl(button2,"button2");
+                goToUrl("button2");
                 break;
             case R.id.user_button3:
-                goToUrl(button3,"button3");
+                goToUrl("button3");
                 break;
             case R.id.user_button4:
-                goToUrl(button4,"button4");
+                goToUrl("button4");
                 break;
             case R.id.user_button5:
-                goToUrl(button5,"button5");
+                goToUrl("button5");
                 break;
             case R.id.user_button6:
-                goToUrl(button6,"button6");
+                goToUrl("button6");
                 break;
             case R.id.user_button7:
-                goToUrl(button7,"button7");
+                goToUrl("button7");
                 break;
             case R.id.user_button8:
-                goToUrl(button8,"button8");
+                goToUrl("button8");
                 break;
         }
     }
 
-    private void goToUrl(Button button, String buttonName) {
-        Toast.makeText(this, linkStore.getLink(buttonName), Toast.LENGTH_SHORT).show();
+    private void goToUrl(String buttonId) {
+        String url=linkStore.getLink(buttonId);
+        Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
     }
 }
