@@ -10,47 +10,42 @@ import android.view.View;
 import android.widget.Button;
 
 import BLL.CreatorClass;
-import helper.DataBase;
+import BLL.LinkStore;
+import helper.DataBaseData;
 
 /**
  * Created by Amir on 30-Jan-16.
  */
 public class AdminActivity extends AppCompatActivity implements View.OnClickListener, DialogInterface.OnClickListener {
-
-    private DataBase db;
-    private Button button1, button2, button3, button4, button5, button6, button7, button8, settingButton;
+    private LinkStore linkStore;
+    private Button[] buttonList = new Button[9];
+    private int[] idList = {R.id.adnin_button1, R.id.admin_button2, R.id.admin_button3, R.id.admin_button4, R.id.admin_button5, R.id.admin_button6, R.id.admin_button7, R.id.admin_button8, R.id.setting_btn};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_activity);
-        initilizeBtns();
-        setClickListener();
+        linkStore = CreatorClass.linkStore;
+        btnInitilizeAndListen();
+        setButtonLabel();
 
     }
 
-    private void setClickListener() {
-        button1.setOnClickListener(this);
-        button2.setOnClickListener(this);
-        button3.setOnClickListener(this);
-        button4.setOnClickListener(this);
-        button5.setOnClickListener(this);
-        button6.setOnClickListener(this);
-        button7.setOnClickListener(this);
-        button8.setOnClickListener(this);
-        settingButton.setOnClickListener(this);
+
+    private void btnInitilizeAndListen() {
+        for (int i = 0; i < 9; i++) {
+            buttonList[i] = (Button) findViewById(idList[i]);
+            buttonList[i].setOnClickListener(this);
+        }
+
     }
 
-    private void initilizeBtns() {
-        button1 = (Button) findViewById(R.id.adnin_button1);
-        button2 = (Button) findViewById(R.id.admin_button2);
-        button3 = (Button) findViewById(R.id.admin_button3);
-        button4 = (Button) findViewById(R.id.admin_button4);
-        button5 = (Button) findViewById(R.id.admin_button5);
-        button6 = (Button) findViewById(R.id.admin_button6);
-        button7 = (Button) findViewById(R.id.admin_button7);
-        button8 = (Button) findViewById(R.id.admin_button8);
-        settingButton = (Button) findViewById(R.id.setting_btn);
+    private void setButtonLabel() {
+
+        for (int i = 0; i < 8; i++) {
+            buttonList[i].setText(linkStore.getData(i).name);
+        }
+
 
     }
 
@@ -88,8 +83,10 @@ public class AdminActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    private CharSequence[] itemList = {"Button 1", "Button 2", "Button 3", "Button 4", "Button 5", "Button 6", "Button 7", "Button 8"};
+
     private void createAlertDialog() {
-        CharSequence[] itemList = {"Button 1", "Button 2", "Button 3", "Button 4", "Button 5", "Button 6", "Button 7", "Button 8"};
+
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         alertBuilder.setTitle("Select Button to Edit");
         alertBuilder.setItems(itemList, this);
@@ -98,13 +95,16 @@ public class AdminActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void goToUrl(String buttonId) {
-        String url = CreatorClass.linkStore.getLink(buttonId);
+        String url = linkStore.getLink(buttonId);
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);
     }
 
     @Override
-    public void onClick(DialogInterface dialog, int which) {
+    public void onClick(DialogInterface dialog, int position) {
+        Intent intent = new Intent(this, SettingActivity.class);
+        intent.putExtra("btnPos", position);
+        startActivityForResult(intent, 1);
 
     }
 }

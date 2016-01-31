@@ -9,45 +9,43 @@ import android.widget.Button;
 
 import BLL.CreatorClass;
 import BLL.LinkStore;
-import helper.DataBase;
 
 /**
  * Created by Amir on 30-Jan-16.
  */
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
+    private LinkStore linkStore;
+    private Button[] buttonList=new Button[8];
+    private int[] idList={R.id.user_button1,R.id.user_button2,R.id.user_button3,R.id.user_button4,R.id.user_button5,R.id.user_button6,R.id.user_button7,R.id.user_button8};
 
-    private Button button1, button2, button3, button4, button5, button6, button7, button8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_activity);
-        initilizeBtns();
-        setClickListener();
+        linkStore=CreatorClass.linkStore;
+        btnInitilizeAndListen();
+        setButtonLabel();
 
 
     }
 
-    private void setClickListener() {
-        button1.setOnClickListener(this);
-        button2.setOnClickListener(this);
-        button3.setOnClickListener(this);
-        button4.setOnClickListener(this);
-        button5.setOnClickListener(this);
-        button6.setOnClickListener(this);
-        button7.setOnClickListener(this);
-        button8.setOnClickListener(this);
+
+
+    private void btnInitilizeAndListen() {
+        for(int i=0;i<8;i++){
+            buttonList[i]=(Button)findViewById(idList[i]);
+            buttonList[i].setOnClickListener(this);
+        }
+
     }
 
-    private void initilizeBtns() {
-        button1 = (Button) findViewById(R.id.user_button1);
-        button2 = (Button) findViewById(R.id.user_button2);
-        button3 = (Button) findViewById(R.id.user_button3);
-        button4 = (Button) findViewById(R.id.user_button4);
-        button5 = (Button) findViewById(R.id.user_button5);
-        button6 = (Button) findViewById(R.id.user_button6);
-        button7 = (Button) findViewById(R.id.user_button7);
-        button8 = (Button) findViewById(R.id.user_button8);
+    private void setButtonLabel(){
+
+        for(int i=0;i<buttonList.length;i++){
+            buttonList[i].setText(linkStore.getData(i).name);
+        }
+
 
     }
 
@@ -82,7 +80,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void goToUrl(String buttonId) {
-        String url= CreatorClass.linkStore.getLink(buttonId);
+        String url= linkStore.getLink(buttonId);
         Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);
     }
