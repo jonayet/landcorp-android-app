@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import BLL.CreatorClass;
 import BLL.LinkStore;
 import helper.DataBase;
 
@@ -14,8 +15,6 @@ import helper.DataBase;
  * Created by Amir on 30-Jan-16.
  */
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
-    private DataBase db;
-    private LinkStore linkStore;
 
     private Button button1, button2, button3, button4, button5, button6, button7, button8;
 
@@ -25,8 +24,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.user_activity);
         initilizeBtns();
         setClickListener();
-        db = new DataBase(this, 2);
-        linkStore = new LinkStore(db);
+
+
     }
 
     private void setClickListener() {
@@ -83,7 +82,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void goToUrl(String buttonId) {
-        String url=linkStore.getLink(buttonId);
+        String url= CreatorClass.linkStore.getLink(buttonId);
         Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);
     }

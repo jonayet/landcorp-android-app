@@ -31,4 +31,6 @@ public class LinkStore {
         contentValues.clear();
         return result;
     }
+
+
 }

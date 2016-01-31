@@ -3,7 +3,6 @@ package landcrop.com.landcorpapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,22 +10,31 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import BLL.CreatorClass;
+import BLL.LinkStore;
+import helper.DataBase;
 import helper.User;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     ArrayList<User> userList = new ArrayList<>();
     EditText userNameField, passField;
     Button loginBtn;
     String userName, pass;
 
+    private DataBase db;
+    private LinkStore linkStore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.login_activity);
 
         userNameField = (EditText) findViewById(R.id.user_name_field);
         passField = (EditText) findViewById(R.id.pass_field);
         loginBtn = (Button) findViewById(R.id.login_btn);
+
+        db = CreatorClass.createDataBase(this,2);
+        CreatorClass.createLinkStore(db);
 
         loginBtn.setOnClickListener(this);
         createUserList();
