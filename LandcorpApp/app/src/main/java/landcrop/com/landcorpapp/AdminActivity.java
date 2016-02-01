@@ -12,7 +12,6 @@ import android.widget.Button;
 import BLL.CreatorClass;
 import BLL.LinkStore;
 import helper.DataBase;
-import helper.DataBaseData;
 
 /**
  * Created by Amir on 30-Jan-16.
@@ -26,9 +25,6 @@ public class AdminActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_activity);
-//        linkStore = CreatorClass.linkStore;
-//        btnInitilizeAndListen();
-//        setButtonLabel();
     }
 
     @Override
@@ -36,27 +32,22 @@ public class AdminActivity extends AppCompatActivity implements View.OnClickList
         DataBase db = CreatorClass.createDataBase(this,2);
         CreatorClass.createLinkStore(db);
         linkStore = CreatorClass.linkStore;
-        btnInitilizeAndListen();
+        banInitializeAndListen();
         setButtonLabel();
         super.onResume();
     }
 
-
-    private void btnInitilizeAndListen() {
+    private void banInitializeAndListen() {
         for (int i = 0; i < 9; i++) {
             buttonList[i] = (Button) findViewById(idList[i]);
             buttonList[i].setOnClickListener(this);
         }
-
     }
 
     private void setButtonLabel() {
-
         for (int i = 0; i < 8; i++) {
             buttonList[i].setText(linkStore.getName(i));
         }
-
-
     }
 
     @Override
@@ -89,23 +80,23 @@ public class AdminActivity extends AppCompatActivity implements View.OnClickList
             case R.id.setting_btn:
                 createAlertDialog();
                 break;
-
         }
     }
 
     private CharSequence[] itemList = {"Button 1", "Button 2", "Button 3", "Button 4", "Button 5", "Button 6", "Button 7", "Button 8"};
 
     private void createAlertDialog() {
-
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         alertBuilder.setTitle("Select Button to Edit");
         alertBuilder.setItems(itemList, this);
-
         alertBuilder.show();
     }
 
     private void goToUrl(String buttonId) {
         String url = linkStore.getLink(buttonId);
+        if(!url.startsWith("http")){
+            url = "http://" + url;
+        }
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);
     }
@@ -116,6 +107,5 @@ public class AdminActivity extends AppCompatActivity implements View.OnClickList
         intent.putExtra("btnId",linkStore.getId(position));
         startActivity(intent);
         finish();
-
     }
 }

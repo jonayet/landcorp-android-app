@@ -26,27 +26,19 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         linkStore=CreatorClass.linkStore;
         btnInitilizeAndListen();
         setButtonLabel();
-
-
     }
-
-
 
     private void btnInitilizeAndListen() {
         for(int i=0;i<8;i++){
             buttonList[i]=(Button)findViewById(idList[i]);
             buttonList[i].setOnClickListener(this);
         }
-
     }
 
     private void setButtonLabel(){
-
         for(int i=0;i<buttonList.length;i++){
             buttonList[i].setText(linkStore.getName(i));
         }
-
-
     }
 
     @Override
@@ -81,6 +73,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
     private void goToUrl(String buttonId) {
         String url= linkStore.getLink(buttonId);
+        if(!url.startsWith("http")){
+            url = "http://" + url;
+        }
         Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);
     }

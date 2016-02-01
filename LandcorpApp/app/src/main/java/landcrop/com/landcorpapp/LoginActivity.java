@@ -1,8 +1,8 @@
 package landcrop.com.landcorpapp;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,7 +11,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import BLL.CreatorClass;
-import BLL.LinkStore;
 import helper.DataBase;
 import helper.User;
 
@@ -20,9 +19,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     EditText userNameField, passField;
     Button loginBtn;
     String userName, pass;
-
-    private DataBase db;
-    private LinkStore linkStore;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,36 +30,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         passField = (EditText) findViewById(R.id.pass_field);
         loginBtn = (Button) findViewById(R.id.login_btn);
 
-        db = CreatorClass.createDataBase(this,2);
+        DataBase db = CreatorClass.createDataBase(this, 2);
         CreatorClass.createLinkStore(db);
 
         loginBtn.setOnClickListener(this);
         createUserList();
-
     }
 
     private void createUserList() {
-        userList.add(new User("amir", "123", 1, true));
-        userList.add(new User("jonayet", "123", 2, true));
-        userList.add(new User("ahmad", "123", 3, false));
-        userList.add(new User("jobeda", "123", 4, false));
+        userList.add(new User("amir", "123", "",  "", 1, true));
+        userList.add(new User("jobeda", "123", "", "", 4, false));
+        userList.add(new User("HAQUER", "234","Ronnie Haque",  "Business Intelligence Developer", 2, true));
+        userList.add(new User("BAILEYD", "456", "David Bailey", "Manager Technology and Innovation", 3, true));
+        userList.add(new User("WILSONL", "678", "Leonard Wilson", "Assistant Dairy Production Manager", 3, false));
+        userList.add(new User("KUPAS", "789", "Scott Kupa", "Dairy Production Managern", 3, false));
     }
-
 
     @Override
     public void onClick(View v) {
-        userName = userNameField.getText().toString();
-        pass = passField.getText().toString();
+        userName = userNameField.getText().toString().trim().toLowerCase();
+        pass = passField.getText().toString().trim();
         if (fieldCheck()) {
-            if (authintication()) {
+            if (Authentication()) {
                 runActivity();
             }
         }
-
-
     }
-
-    private User user;
 
     private void runActivity() {
         Intent intent;
@@ -87,31 +80,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return true;
     }
 
-    private boolean authintication() {
-
-        for (User user : userList
-                ) {
+    private boolean Authentication() {
+        for (User user : userList) {
             if (user.Username.equals(userName)) {
                 if (user.Password.equals(pass)) {
                     this.user = user;
                     return true;
-
-
                 } else {
                     Toast.makeText(this, "Wrong password", Toast.LENGTH_SHORT).show();
                     return false;
-
                 }
             }
-
         }
 
         Toast.makeText(this, "Wrong username", Toast.LENGTH_SHORT).show();
         return false;
-
-
     }
-
-
-
 }

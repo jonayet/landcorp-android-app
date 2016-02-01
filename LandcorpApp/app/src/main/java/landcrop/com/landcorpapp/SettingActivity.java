@@ -31,7 +31,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         getIntentData();
 
         demoButton = (Button) findViewById(R.id.demo_btn);
-
         doneBtn = (Button) findViewById(R.id.done_btn);
         doneBtn.setOnClickListener(this);
 
@@ -40,16 +39,14 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         newLinkField= (EditText) findViewById(R.id.new_link_field);
 
         DataBaseData data = linkStore.getData(btnId);
+        newNameField.setText(data.name);
+        newLinkField.setText(data.link);
         setDemoButtonInfo(data);
-
     }
 
     private void setDemoButtonInfo(DataBaseData data) {
-
         demoButton.setText(data.name);
         linkView.setText(data.link);
-
-
     }
 
     private void getIntentData() {
@@ -66,7 +63,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         Intent intent=new Intent(this,AdminActivity.class);
         startActivity(intent);
         finish();
-
     }
 
     private void updateDataBase() {
@@ -83,6 +79,4 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             return;
         }
     }
-
-
 }
