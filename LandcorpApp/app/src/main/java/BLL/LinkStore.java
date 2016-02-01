@@ -1,9 +1,7 @@
 package BLL;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -13,27 +11,29 @@ import helper.DataBaseData;
 public class LinkStore {
     private DataBase schema;
     private SQLiteDatabase db;
-    private ArrayList<DataBaseData> allDataList = new ArrayList<>();
+    private ArrayList<DataBaseData> dataList;
     ;
 
     public LinkStore(DataBase db) {
         this.schema = db;
         this.db = db.getWritableDatabase();
-        getDataBaseData();
+        initilizeDataList();
 
     }
 
-    private void getDataBaseData() {
+    public void initilizeDataList() {
         Cursor cursor = db.rawQuery("SELECT * FROM " + schema.TABLE, null);
+        dataList = new ArrayList<>();
 
         while (cursor.moveToNext()) {
-            allDataList.add(new DataBaseData(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3)));
+            dataList.add(new DataBaseData(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3)));
         }
         cursor.close();
     }
 
     public void updateBoth(String id,String name, String link) {
-        db.execSQL("UPDATE "+schema.TABLE+" SET "+schema.LABEL+" ='"+name+"', "+schema.URL+" ='"+link+"' WHERE "+schema.ID+" ='"+id+"'");
+        db.execSQL("UPDATE " + schema.TABLE + " SET " + schema.LABEL + " ='" + name + "', " + schema.URL + " ='" + link + "' WHERE " + schema.ID + " ='" + id + "'");
+
 
     }
 
@@ -52,7 +52,7 @@ public class LinkStore {
 
 
     public String getLink(String buttonId){
-        for (DataBaseData data:allDataList
+        for (DataBaseData data: dataList
              ) {
             if (data.id.equals(buttonId)){
                 return data.link;
@@ -62,7 +62,7 @@ public class LinkStore {
     }
 
     public DataBaseData getData(String buttonId){
-        for (DataBaseData data:allDataList
+        for (DataBaseData data: dataList
                 ) {
             if (data.id.equals(buttonId)){
                 return data;
@@ -73,11 +73,19 @@ public class LinkStore {
     }
 
     public String getName(int position){
-        return allDataList.get(position).name;
+        return dataList.get(position).name;
     }
 
     public String getId(int position){
-        return allDataList.get(position).id;
+        return dataList.get(position).id;
+    }
+
+    public CharSequence[] getDialogItemList(){
+        CharSequence[] itemList=new CharSequence[8];
+        for(int i=0;i<8;i++){
+            itemList[i]=dataList.get(i).name;
+        }
+        return itemList;
     }
 
 

@@ -11,13 +11,13 @@ import android.widget.Button;
 
 import BLL.CreatorClass;
 import BLL.LinkStore;
-import helper.DataBase;
 
 /**
  * Created by Amir on 30-Jan-16.
  */
 public class AdminActivity extends AppCompatActivity implements View.OnClickListener, DialogInterface.OnClickListener {
     private LinkStore linkStore;
+    private CharSequence[] itemList;
     private Button[] buttonList = new Button[9];
     private int[] idList = {R.id.adnin_button1, R.id.admin_button2, R.id.admin_button3, R.id.admin_button4, R.id.admin_button5, R.id.admin_button6, R.id.admin_button7, R.id.admin_button8, R.id.setting_btn};
 
@@ -29,9 +29,9 @@ public class AdminActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     protected void onResume() {
-        DataBase db = CreatorClass.createDataBase(this,2);
-        CreatorClass.createLinkStore(db);
-        linkStore = CreatorClass.linkStore;
+        linkStore=CreatorClass.linkStore;
+        linkStore.initilizeDataList();
+        itemList = linkStore.getDialogItemList();
         banInitializeAndListen();
         setButtonLabel();
         super.onResume();
@@ -83,12 +83,12 @@ public class AdminActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private CharSequence[] itemList = {"Button 1", "Button 2", "Button 3", "Button 4", "Button 5", "Button 6", "Button 7", "Button 8"};
 
     private void createAlertDialog() {
+
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         alertBuilder.setTitle("Select Button to Edit");
-        alertBuilder.setItems(itemList, this);
+        alertBuilder.setItems(itemList,this);
         alertBuilder.show();
     }
 
