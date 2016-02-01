@@ -43,7 +43,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     private void setButtonLabel(){
 
         for(int i=0;i<buttonList.length;i++){
-            buttonList[i].setText(linkStore.getData(i).name);
+            buttonList[i].setText(linkStore.getName(i));
         }
 
 

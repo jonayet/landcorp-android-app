@@ -20,6 +20,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     private Button demoButton, doneBtn;
     private TextView linkView;
     private EditText newNameField,newLinkField;
+    private String btnId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,15 +28,18 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.setting_activity);
 
         linkStore = CreatorClass.linkStore;
-        int btnPos = getIntentData();
+        getIntentData();
 
         demoButton = (Button) findViewById(R.id.demo_btn);
+
         doneBtn = (Button) findViewById(R.id.done_btn);
+        doneBtn.setOnClickListener(this);
+
         linkView = (TextView) findViewById(R.id.link_view);
         newNameField= (EditText) findViewById(R.id.new_name_field);
         newLinkField= (EditText) findViewById(R.id.new_link_field);
 
-        DataBaseData data = linkStore.getData(btnPos);
+        DataBaseData data = linkStore.getData(btnId);
         setDemoButtonInfo(data);
 
     }
@@ -48,9 +52,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    private int getIntentData() {
+    private void getIntentData() {
         Intent intent = getIntent();
-        return intent.getExtras().getInt("btnPos");
+        btnId=intent.getExtras().getString("btnId");
     }
     String newName,newLink;
     @Override
@@ -58,18 +62,27 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         newName=newNameField.getText().toString();
         newLink=newLinkField.getText().toString();
 
-        processInfo();
+        updateDataBase();
+        Intent intent=new Intent(this,AdminActivity.class);
+        startActivity(intent);
+        finish();
+
     }
 
-    private void processInfo() {
-        if(newName.length()==0&& newLink.length()==0){
+    private void updateDataBase() {
+        if(newName.length()==0 && newLink.length()==0){
             return;
         }else if(newName.length()==0){
-
+            linkStore.updateLink(btnId,newLink);
+            return;
         }else if(newLink.length()==0){
-
+            linkStore.updateName(btnId,newName);
+            return;
         }else {
-            //linkStore.update(newName,newLink);
+            linkStore.updateBoth(btnId,newName,newLink);
+            return;
         }
     }
+
+
 }

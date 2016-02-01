@@ -32,30 +32,24 @@ public class LinkStore {
         cursor.close();
     }
 
-    public void update(String id,String name, String link) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("name", name);
-        contentValues.put("link", link);
-       // int result = db.update(schema.TABLE,contentValues);
-        contentValues.clear();
-        return ;
+    public void updateBoth(String id,String name, String link) {
+        db.execSQL("UPDATE "+schema.TABLE+" SET "+schema.LABEL+" ='"+name+"', "+schema.URL+" ='"+link+"' WHERE "+schema.ID+" ='"+id+"'");
+
     }
-//    public int update(String name) {
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put("name", name);
-//        //contentValues.put("link", link);
-//        int result = (int) db.insert(schema.TABLE, null, contentValues);
-//        contentValues.clear();
-//        return result;
-//    }
-//    public int update(String link) {
-//        ContentValues contentValues = new ContentValues();
-//       // contentValues.put("name", name);
-//        contentValues.put("link", link);
-//        int result = (int) db.insert(schema.TABLE, null, contentValues);
-//        contentValues.clear();
-//        return result;
-//    }
+
+    public void updateLink(String id,String link) {
+        db.execSQL("UPDATE "+schema.TABLE+" SET "+schema.URL+" ='"+link+"' WHERE "+schema.ID+" ='"+id+"'");
+
+
+    }
+
+    public void updateName(String id,String name) {
+        db.execSQL("UPDATE "+schema.TABLE+" SET "+schema.LABEL+" ='"+name+"' WHERE "+schema.ID+" ='"+id+"'");
+
+
+
+    }
+
 
     public String getLink(String buttonId){
         for (DataBaseData data:allDataList
@@ -67,9 +61,25 @@ public class LinkStore {
         return null;
     }
 
-    public DataBaseData getData(int position){
-        return allDataList.get(position);
+    public DataBaseData getData(String buttonId){
+        for (DataBaseData data:allDataList
+                ) {
+            if (data.id.equals(buttonId)){
+                return data;
+            }
+        }
+
+        return null;
     }
+
+    public String getName(int position){
+        return allDataList.get(position).name;
+    }
+
+    public String getId(int position){
+        return allDataList.get(position).id;
+    }
+
 
 
 

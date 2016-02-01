@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import BLL.CreatorClass;
 import BLL.LinkStore;
+import helper.DataBase;
 import helper.DataBaseData;
 
 /**
@@ -25,10 +26,19 @@ public class AdminActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_activity);
+//        linkStore = CreatorClass.linkStore;
+//        btnInitilizeAndListen();
+//        setButtonLabel();
+    }
+
+    @Override
+    protected void onResume() {
+        DataBase db = CreatorClass.createDataBase(this,2);
+        CreatorClass.createLinkStore(db);
         linkStore = CreatorClass.linkStore;
         btnInitilizeAndListen();
         setButtonLabel();
-
+        super.onResume();
     }
 
 
@@ -43,7 +53,7 @@ public class AdminActivity extends AppCompatActivity implements View.OnClickList
     private void setButtonLabel() {
 
         for (int i = 0; i < 8; i++) {
-            buttonList[i].setText(linkStore.getData(i).name);
+            buttonList[i].setText(linkStore.getName(i));
         }
 
 
@@ -103,8 +113,9 @@ public class AdminActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(DialogInterface dialog, int position) {
         Intent intent = new Intent(this, SettingActivity.class);
-        intent.putExtra("btnPos", position);
-        startActivityForResult(intent, 1);
+        intent.putExtra("btnId",linkStore.getId(position));
+        startActivity(intent);
+        finish();
 
     }
 }
