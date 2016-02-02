@@ -78,6 +78,5 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         }
         Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);
-
     }
 }

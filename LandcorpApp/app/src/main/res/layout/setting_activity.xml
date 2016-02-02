@@ -24,16 +24,6 @@
         android:layout_alignEnd="@+id/demo_btn"
         android:hint="New Link"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Done"
-        android:id="@+id/done_btn"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="58dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,8 +38,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:text="Color"
-        android:id="@+id/color_button"
+        android:text="SAVE"
+        android:id="@+id/done_btn"
         android:layout_alignBottom="@+id/new_name_field"
         android:layout_toEndOf="@+id/new_link_field"
         android:layout_marginStart="7dp"

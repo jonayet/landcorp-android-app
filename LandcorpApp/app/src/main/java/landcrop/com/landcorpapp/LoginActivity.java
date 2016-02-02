@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private boolean Authentication() {
         for (User user : userList) {
-            if (user.Username.equals(userName)) {
+            if (user.Username.toLowerCase().equals(userName)) {
                 if (user.Password.equals(pass)) {
                     this.user = user;
                     return true;
